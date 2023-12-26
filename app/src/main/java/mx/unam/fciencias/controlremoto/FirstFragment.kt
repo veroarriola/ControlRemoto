@@ -26,7 +26,7 @@ class FirstFragment : Fragment() {
 
     private var _player: ExoPlayer? = null
     private var _playWhenReady = true
-    private var _currentWindow = 0
+    //private var _currentWindow = 0
     private var _playbackPosition = 0L
 
     override fun onCreateView(
@@ -53,9 +53,9 @@ class FirstFragment : Fragment() {
                 exoPlayer: ExoPlayer ->
                     binding.videoView.player = exoPlayer
                 exoPlayer.playWhenReady = _playWhenReady
-                exoPlayer.seekTo(_currentWindow, _playbackPosition)
+                //exoPlayer.seekTo(_currentWindow, _playbackPosition)
                 exoPlayer.prepare()
-                val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp4));
+                val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp4))
                 exoPlayer.setMediaItem(mediaItem)
             }
     }
@@ -73,7 +73,7 @@ class FirstFragment : Fragment() {
     @UnstableApi private fun releasePlayer() {
         _player?.run {
             _playbackPosition = this.currentPosition
-            _currentWindow = this.currentWindowIndex
+            //currentWindow = this.currentWindowIndex
             _playWhenReady = this.playWhenReady
             release()
         }
@@ -82,7 +82,6 @@ class FirstFragment : Fragment() {
 
     @UnstableApi override fun onDestroyView() {
         super.onDestroyView()
-        releasePlayer()
         _binding = null
     }
 
