@@ -55,7 +55,8 @@ class FirstFragment : Fragment() {
                 exoPlayer.playWhenReady = _playWhenReady
                 //exoPlayer.seekTo(_currentWindow, _playbackPosition)
                 exoPlayer.prepare()
-                val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp4))
+                //val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp4))
+                val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mpeg))
                 exoPlayer.setMediaItem(mediaItem)
             }
     }

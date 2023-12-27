@@ -8,6 +8,7 @@
     <string name="previous">Previous</string>
 
     <string name="media_url_mp4">https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4</string>
+    <string name="media_url_mpeg">http://localhost:8000/stream.mjpg</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
