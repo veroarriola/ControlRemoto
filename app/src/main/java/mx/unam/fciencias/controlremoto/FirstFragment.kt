@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.navigation.fragment.findNavController
 import mx.unam.fciencias.controlremoto.databinding.FragmentFirstBinding
 
@@ -29,12 +31,15 @@ class FirstFragment : Fragment() {
     //private var _currentWindow = 0
     private var _playbackPosition = 0L
 
+    private var _mediaURI: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _mediaURI = getString(R.string.media_url_mpeg)
         return binding.root
     }
 
@@ -46,17 +51,29 @@ class FirstFragment : Fragment() {
         }
     }
 
-    private fun initializePlayer() {
-        _player = ExoPlayer.Builder(this.requireContext())
+    @UnstableApi  private fun initializePlayer() {
+        // https://developer.android.com/guide/topics/media/exoplayer/live-streaming?hl=es-419
+        // Global settings.
+        var context = this.requireContext()
+        _player = ExoPlayer.Builder(context)
+            .setMediaSourceFactory(DefaultMediaSourceFactory(context).setLiveTargetOffsetMs(5000))
             .build()
             .also {
                 exoPlayer: ExoPlayer ->
                     binding.videoView.player = exoPlayer
-                exoPlayer.playWhenReady = _playWhenReady
-                //exoPlayer.seekTo(_currentWindow, _playbackPosition)
-                exoPlayer.prepare()
-                //val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp4))
-                val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mpeg))
+                    exoPlayer.playWhenReady = _playWhenReady
+                    //exoPlayer.seekTo(_currentWindow, _playbackPosition)
+                    //exoPlayer.prepare()
+                    //val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp4))
+                //val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mpeg))
+                // Per MediaItem settings.
+                val mediaItem =
+                    MediaItem.Builder()
+                        .setUri("http://localhost:8000/streaming.mjpg")
+                        .setLiveConfiguration(
+                            MediaItem.LiveConfiguration.Builder().setMaxPlaybackSpeed(1.02f).build()
+                        )
+                        .build()
                 exoPlayer.setMediaItem(mediaItem)
             }
     }
