@@ -1,18 +1,18 @@
 package mx.unam.fciencias.controlremoto
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.OptIn
-import androidx.media3.common.MediaItem
+import androidx.fragment.app.Fragment
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.navigation.fragment.findNavController
 import mx.unam.fciencias.controlremoto.databinding.FragmentFirstBinding
+/*import java.io.BufferedInputStream
+import java.net.HttpURLConnection
+import java.net.URL
+*/
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -26,12 +26,14 @@ class FirstFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    /* Too fancy, it seems.
     private var _player: ExoPlayer? = null
     private var _playWhenReady = true
     //private var _currentWindow = 0
     private var _playbackPosition = 0L
 
     private var _mediaURI: String? = null
+     */
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +41,7 @@ class FirstFragment : Fragment() {
     ): View? {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        _mediaURI = getString(R.string.media_url_mpeg)
+        //_mediaURI = getString(R.string.media_url_mpeg)
         return binding.root
     }
 
@@ -54,6 +56,7 @@ class FirstFragment : Fragment() {
     @UnstableApi  private fun initializePlayer() {
         // https://developer.android.com/guide/topics/media/exoplayer/live-streaming?hl=es-419
         // Global settings.
+        /*
         var context = this.requireContext()
         _player = ExoPlayer.Builder(context)
             .setMediaSourceFactory(DefaultMediaSourceFactory(context).setLiveTargetOffsetMs(5000))
@@ -69,14 +72,43 @@ class FirstFragment : Fragment() {
                 // Per MediaItem settings.
                 val mediaItem =
                     MediaItem.Builder()
-                        .setUri("http://localhost:8000/streaming.mjpg")
+                        .setUri("http://192.168.16.104:8000/stream.mjpg")
                         .setLiveConfiguration(
                             MediaItem.LiveConfiguration.Builder().setMaxPlaybackSpeed(1.02f).build()
                         )
                         .build()
                 exoPlayer.setMediaItem(mediaItem)
             }
+         */
+
+        /* Funcionaría, pero hay que analizar todo el multipart a mano.
+        val thread = Thread {
+            var urlConnection : HttpURLConnection? = null
+            try {
+                val link = "http://192.168.16.104:8000/stream.mjpg"
+                val url = URL(link)
+                urlConnection = url.openConnection() as HttpURLConnection
+                val `in`: BufferedInputStream = BufferedInputStream(urlConnection.inputStream)
+                readStream(`in`)
+            } finally {
+                urlConnection?.disconnect()
+            }
+        }
+
+        thread.start()
+         */
+        val link = "http://192.168.16.104:8000/stream.mjpg"
+        val videoView = binding.videoView
+        videoView.loadUrl(link)
     }
+    /*
+    private fun readStream(bis: BufferedInputStream) {
+        while(bis.)
+        binding.textviewFirst.text = bis.toString()
+        //Bitmap bitmap = BitmapFactory.decodeStream(bufHttpEntity.getContent())
+        //binding.videoView.setImageBitmap()
+    }
+    */
 
     /*@SuppressLint("InlinedApi")
     private fun hideSystemUi() {
@@ -88,6 +120,7 @@ class FirstFragment : Fragment() {
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }*/
 
+    /*
     @UnstableApi private fun releasePlayer() {
         _player?.run {
             _playbackPosition = this.currentPosition
@@ -102,7 +135,7 @@ class FirstFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
+    */
     @UnstableApi override fun onStart() {
         super.onStart()
         if (Util.SDK_INT >= 24) {
@@ -113,11 +146,11 @@ class FirstFragment : Fragment() {
     @UnstableApi override fun onResume() {
         super.onResume()
         //hideSystemUi()
-        if ((Util.SDK_INT < 24 || _player == null)) {
+        //if ((Util.SDK_INT < 24 || _player == null)) {
             initializePlayer()
-        }
+        //}
     }
-
+    /*
     @UnstableApi override fun onPause() {
         super.onPause()
         if (Util.SDK_INT < 24) {
@@ -131,4 +164,5 @@ class FirstFragment : Fragment() {
             releasePlayer()
         }
     }
+     */
 }
