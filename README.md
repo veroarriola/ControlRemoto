@@ -10,3 +10,7 @@ Para ejecutar en un dispositivo físico:
   # reiniciar sesión
   sudo apt install android-sdk-platform-tools-common
   ```
+
+Para configurar la Raspberry a la que se conectará:
+
+* [How to Turn a Raspberry Pi Into a Wi-Fi Access Point](https://www.tomshardware.com/how-to/raspberry-pi-access-point)

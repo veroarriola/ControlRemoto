@@ -21,6 +21,8 @@
 
     <include layout="@layout/content_main" />
 
+    <include layout="@layout/control_movimiento" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -29,33 +31,5 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
         app:srcCompat="@android:drawable/ic_dialog_email" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/fondo"/>
-
-    <ImageButton
-        android:id="@+id/bigButton"
-        android:background="@android:color/transparent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="60dp"
-        android:layout_marginEnd="60dp"
-        android:src="@drawable/bgrande"/>
-
-    <ImageButton
-        android:id="@+id/smallButton"
-        android:background="@android:color/transparent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="192dp"
-        android:layout_marginEnd="96dp"
-        android:src="@drawable/bchico"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
