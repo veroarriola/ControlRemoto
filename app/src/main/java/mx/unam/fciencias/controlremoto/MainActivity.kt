@@ -9,6 +9,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageButton
+import android.widget.Toast
 import mx.unam.fciencias.controlremoto.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -28,9 +30,21 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
+        /*binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+        }*/
+
+        val botónAdelante = findViewById<ImageButton>(R.id.botónAdelante)
+        botónAdelante.setOnClickListener {
+            val text = "Adelante"
+            val duration = Toast.LENGTH_SHORT
+            Toast.makeText(this, text, duration).show()
+        }
+
+        val botónAtrás = findViewById<ImageButton>(R.id.botónAtrás)
+        botónAtrás.setOnClickListener {
+            Toast.makeText(this, "Atrás", Toast.LENGTH_SHORT).show()
         }
     }
 

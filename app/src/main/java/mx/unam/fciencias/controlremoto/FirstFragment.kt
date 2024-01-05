@@ -97,7 +97,7 @@ class FirstFragment : Fragment() {
 
         thread.start()
          */
-        val link = "http://192.168.16.104:8000/stream.mjpg"
+        val link = "http://192.168.16.107:8000/stream.mjpg"
         val videoView = binding.videoView
         videoView.loadUrl(link)
     }
