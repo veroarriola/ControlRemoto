@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.common.util.Util
+//import androidx.media3.common.util.UnstableApi
+//import androidx.media3.common.util.Util
 import androidx.navigation.fragment.findNavController
 import mx.unam.fciencias.controlremoto.databinding.FragmentFirstBinding
 /*import java.io.BufferedInputStream
@@ -53,7 +53,8 @@ class FirstFragment : Fragment() {
         }
     }
 
-    @UnstableApi  private fun initializePlayer() {
+    //@UnstableApi
+    private fun initializePlayer() {
         // https://developer.android.com/guide/topics/media/exoplayer/live-streaming?hl=es-419
         // Global settings.
         /*
@@ -136,6 +137,7 @@ class FirstFragment : Fragment() {
         _binding = null
     }
     */
+    /*
     @UnstableApi override fun onStart() {
         super.onStart()
         if (Util.SDK_INT >= 24) {
@@ -149,7 +151,7 @@ class FirstFragment : Fragment() {
         //if ((Util.SDK_INT < 24 || _player == null)) {
             initializePlayer()
         //}
-    }
+    }*/
     /*
     @UnstableApi override fun onPause() {
         super.onPause()

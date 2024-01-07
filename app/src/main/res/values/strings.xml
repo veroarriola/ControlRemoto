@@ -49,5 +49,18 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Dirección IP:</string>
     <string name="ejemplo_ip">192.168.X.X</string>
+    <string name="SE">Sureste</string>
+    <string name="SW">Suroeste</string>
+    <string name="NE">Noreste</string>
+    <string name="NW">Noroeste</string>
+    <string name="forward">Adelante</string>
+    <string name="backward">Reversa</string>
+    <string name="right">Derecha</string>
+    <string name="left">Izquierda</string>
+    <string name="stop">Alto</string>
+    <string name="accelerate">Acelera</string>
+    <string name="brake">Frena</string>
+    <string name="turn_left">Rota a la izquierda</string>
+    <string name="turn_right">Rota a la derecha</string>
     <string name="title_activity_main">MainActivity</string>
 </resources>
