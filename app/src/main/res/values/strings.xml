@@ -62,5 +62,5 @@
     <string name="brake">Frena</string>
     <string name="turn_left">Rota a la izquierda</string>
     <string name="turn_right">Rota a la derecha</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Control remoto</string>
 </resources>
