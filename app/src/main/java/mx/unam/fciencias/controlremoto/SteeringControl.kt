@@ -204,7 +204,7 @@ fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
 
 fun postCommand(conModel: ConnectionsModel, command: String, toastText: MutableState<String>) {
     // https://developer.android.com/reference/java/net/HttpURLConnection
-    toastText.value = "Enviando comando ${command}"
+    toastText.valu e = "Enviando comando ${command}"
     val thread = Thread {
         val url = URL(conModel.piURLCommand)
         val urlConnection = url.openConnection() as HttpURLConnection
@@ -228,18 +228,18 @@ fun postCommand(conModel: ConnectionsModel, command: String, toastText: MutableS
                 val `in`: InputStream = BufferedInputStream(urlConnection.inputStream)
                 //readStream(`in`)
                 //respuesta = `in`.toString()
-                toastText.value = `in`.toString()
+                //toastText.value = `in`.toString()
             } else {
                 val err: InputStream = BufferedInputStream(urlConnection.errorStream)
-                toastText.value = "Conexión != 200"
+                //toastText.value = "Conexión != 200"
             }
         } catch (e: NoRouteToHostException) {
             // ¿Cómo aviso que se conecte?
-            toastText.value = "Sin ruta al huesped."
+            //toastText.value = "Sin ruta al huesped."
         } catch (e: ProtocolException) {
-            toastText.value = "Error $e."
+            //toastText.value = "Error $e."
         } catch (e: IOException) {
-            toastText.value = "Flujo roto: $e."
+            //toastText.value = "Flujo roto: $e."
         } finally {
             urlConnection.disconnect()
         }

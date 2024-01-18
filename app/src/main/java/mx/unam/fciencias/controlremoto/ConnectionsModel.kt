@@ -2,7 +2,7 @@ package mx.unam.fciencias.controlremoto
 
 import androidx.lifecycle.ViewModel
 class ConnectionsModel : ViewModel() {
-    private var _piURL : String = "http://192.168.1.68:8000"
+    private var _piURL : String = "http://192.168.1.69:8000"
     var piURL: String
         get() = _piURL
         set(value) {
