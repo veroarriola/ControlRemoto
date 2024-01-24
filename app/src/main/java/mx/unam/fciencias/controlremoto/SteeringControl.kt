@@ -204,7 +204,7 @@ fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
 
 fun postCommand(conModel: ConnectionsModel, command: String, toastText: MutableState<String>) {
     // https://developer.android.com/reference/java/net/HttpURLConnection
-    toastText.valu e = "Enviando comando ${command}"
+    toastText.value = "Enviando comando ${command}"
     val thread = Thread {
         val url = URL(conModel.piURLCommand)
         val urlConnection = url.openConnection() as HttpURLConnection

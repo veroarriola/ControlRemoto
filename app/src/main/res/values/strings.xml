@@ -49,6 +49,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Dirección IP:</string>
     <string name="ejemplo_ip">192.168.X.X</string>
+    <string name="default_ip">10.10.120.35:8000</string>
     <string name="SE">Sureste</string>
     <string name="SW">Suroeste</string>
     <string name="NE">Noreste</string>
