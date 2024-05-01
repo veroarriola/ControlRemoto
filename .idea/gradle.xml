@@ -8,8 +8,8 @@
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="/mnt/7bab5dc4-41bd-401f-907f-00caaee0bdcb/blackzafiro/Repos/Programas/ControlRemoto" />
+            <option value="/mnt/7bab5dc4-41bd-401f-907f-00caaee0bdcb/blackzafiro/Repos/Programas/ControlRemoto/app" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
