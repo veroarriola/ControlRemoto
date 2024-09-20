@@ -25,6 +25,7 @@ import java.net.HttpURLConnection
 import java.net.NoRouteToHostException
 import java.net.ProtocolException
 import java.net.URL
+import java.nio.file.Files.readAllBytes
 
 
 @Composable
@@ -225,13 +226,16 @@ fun postCommand(conModel: ConnectionsModel, command: String, toastText: MutableS
             out.close()
 
             if(urlConnection.responseCode == 200) {
-                val `in`: InputStream = BufferedInputStream(urlConnection.inputStream)
+                val `in`: BufferedInputStream = BufferedInputStream(urlConnection.inputStream)
+                while (`in`.available() > 0) {
+                    `in`.read()
+                }
                 //readStream(`in`)
                 //respuesta = `in`.toString()
-                //toastText.value = `in`.toString()
+                toastText.value = "Response 200"
             } else {
                 val err: InputStream = BufferedInputStream(urlConnection.errorStream)
-                //toastText.value = "Conexión != 200"
+                toastText.value = "Response ${urlConnection.responseCode}"
             }
         } catch (e: NoRouteToHostException) {
             // ¿Cómo aviso que se conecte?
