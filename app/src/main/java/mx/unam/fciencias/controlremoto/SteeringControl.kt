@@ -25,7 +25,6 @@ import java.net.HttpURLConnection
 import java.net.NoRouteToHostException
 import java.net.ProtocolException
 import java.net.URL
-import java.nio.file.Files.readAllBytes
 
 
 @Composable
@@ -41,7 +40,7 @@ fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
         val endGuideline = createGuidelineFromEnd(4.dp)
         val startGuideline = createGuidelineFromStart(4.dp)
 
-        var toastText = remember { mutableStateOf("") }
+        val toastText = remember { mutableStateOf("") }
 
         ComposeImageButton(
             onClick = { /* Do something */
@@ -209,10 +208,9 @@ fun postCommand(conModel: ConnectionsModel, command: String, toastText: MutableS
     val thread = Thread {
         val url = URL(conModel.piURLCommand)
         val urlConnection = url.openConnection() as HttpURLConnection
-        var respuesta: String
         try {
             urlConnection.requestMethod = "POST"
-            urlConnection.addRequestProperty("command", command)
+            //urlConnection.addRequestProperty("command", command)
             urlConnection.doOutput = true
 
             //urlConnection.setChunkedStreamingMode(0)
@@ -231,6 +229,7 @@ fun postCommand(conModel: ConnectionsModel, command: String, toastText: MutableS
                     `in`.read()
                 }
                 //readStream(`in`)
+                //var respuesta: String
                 //respuesta = `in`.toString()
                 toastText.value = "Response 200"
             } else {
