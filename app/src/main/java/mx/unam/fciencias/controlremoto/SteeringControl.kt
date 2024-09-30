@@ -34,7 +34,8 @@ fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
         val (buttonForward, buttonBackward, buttonLeft, buttonRight,
             buttonNW, buttonNE, buttonSE, buttonSW, buttonStop,
             buttonAccelerate, buttonBrake,
-            buttonTurnLeft, buttonTurnRight) = createRefs()
+            buttonTurnLeft, buttonTurnRight,
+            buttonSpeak) = createRefs()
         val imageVector = ImageVector.vectorResource(id = R.drawable.flecha)
         val bottomGuideline = createGuidelineFromBottom(4.dp)
         val endGuideline = createGuidelineFromEnd(4.dp)
@@ -158,7 +159,7 @@ fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
                 }
         )
         ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "turn_right", toastText) },
+            onClick = { postCommand(conModel = conModel, command = "clockwise", toastText) },
             buttonModifier = Modifier.constrainAs(buttonTurnRight) {
                 bottom.linkTo(bottomGuideline)
                 start.linkTo(startGuideline)
@@ -167,7 +168,7 @@ fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
             contentDescription = stringResource(id = R.string.turn_right)
         )
         ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "turn_left", toastText) },
+            onClick = { postCommand(conModel = conModel, command = "countclockwise", toastText) },
             buttonModifier = Modifier.constrainAs(buttonTurnLeft) {
                 bottom.linkTo(buttonTurnRight.top)
                 start.linkTo(startGuideline)
@@ -193,6 +194,15 @@ fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
             imageVector = ImageVector.vectorResource(id = R.drawable.acelerar),
             contentDescription = stringResource(id = R.string.accelerate)
         )
+        ComposeImageButton(
+            onClick = { postCommand(conModel = conModel, command = "speak", toastText) },
+            buttonModifier = Modifier.constrainAs(buttonSpeak) {
+                bottom.linkTo(buttonAccelerate.top)
+                start.linkTo(startGuideline)
+            },
+            imageVector = ImageVector.vectorResource(id = R.drawable.hablar),
+            contentDescription = stringResource(id = R.string.speak)
+        )
         if(toastText.value.isNotEmpty()) {
             Toast.makeText(LocalContext.current,
                 toastText.value,
@@ -204,7 +214,7 @@ fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
 
 fun postCommand(conModel: ConnectionsModel, command: String, toastText: MutableState<String>) {
     // https://developer.android.com/reference/java/net/HttpURLConnection
-    toastText.value = "Enviando comando ${command}"
+    toastText.value = "Enviando comando $command"
     val thread = Thread {
         val url = URL(conModel.piURLCommand)
         val urlConnection = url.openConnection() as HttpURLConnection
@@ -218,20 +228,20 @@ fun postCommand(conModel: ConnectionsModel, command: String, toastText: MutableS
             urlConnection.setFixedLengthStreamingMode(bytesToSend.size)
 
             val out: OutputStream = BufferedOutputStream(urlConnection.outputStream)
-            //out.write(command.toByteArray())
             out.write(bytesToSend)
             out.flush()
             out.close()
 
             if(urlConnection.responseCode == 200) {
-                val `in`: BufferedInputStream = BufferedInputStream(urlConnection.inputStream)
+                val `in` = BufferedInputStream(urlConnection.inputStream)
+                val buffer = StringBuilder()
                 while (`in`.available() > 0) {
-                    `in`.read()
+                    buffer.append(`in`.read())
                 }
                 //readStream(`in`)
                 //var respuesta: String
                 //respuesta = `in`.toString()
-                toastText.value = "Response 200"
+                toastText.value = "Response 200 $buffer"
             } else {
                 val err: InputStream = BufferedInputStream(urlConnection.errorStream)
                 toastText.value = "Response ${urlConnection.responseCode}"

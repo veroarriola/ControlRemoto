@@ -13,5 +13,5 @@ class ConnectionsModel : ViewModel() {
         get() = "$_piURL/stream.mjpg"
 
     val piURLCommand: String
-        get() = "$_piURL/command"
+        get() = "$_piURL/command/"
 }
