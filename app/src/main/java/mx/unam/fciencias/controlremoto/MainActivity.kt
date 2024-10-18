@@ -1,5 +1,6 @@
 package mx.unam.fciencias.controlremoto
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
@@ -74,6 +75,7 @@ class MainActivity : ComponentActivity() {
         editPrefs.putString("raspberryURL", _connectionsModel.piURL)
         editPrefs.commit()
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

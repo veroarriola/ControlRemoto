@@ -1,6 +1,7 @@
 package mx.unam.fciencias.controlremoto
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -29,185 +33,207 @@ import java.net.URL
 
 @Composable
 fun SteeringControl(conModel: ConnectionsModel, modifier: Modifier = Modifier) {
-    ConstraintLayout (modifier.fillMaxWidth()) {
-        // Referencias para los componentes a restringir
-        val (buttonForward, buttonBackward, buttonLeft, buttonRight,
-            buttonNW, buttonNE, buttonSE, buttonSW, buttonStop,
-            buttonAccelerate, buttonBrake,
-            buttonTurnLeft, buttonTurnRight,
-            buttonSpeak) = createRefs()
-        val imageVector = ImageVector.vectorResource(id = R.drawable.flecha)
-        val bottomGuideline = createGuidelineFromBottom(4.dp)
-        val endGuideline = createGuidelineFromEnd(4.dp)
-        val startGuideline = createGuidelineFromStart(4.dp)
+    val toastText = remember { mutableStateOf("") }
 
-        val toastText = remember { mutableStateOf("") }
+    Box(Modifier.onKeyEvent {
+        // https://developer.android.com/reference/kotlin/androidx/compose/ui/input/key/Key
+        if (it.key == Key.ButtonR1) {
+            toastText.value = "Pushé R1"
+            true
+        } else {
+            toastText.value = "Pushé ${it.key}"
+            true
+        }
+    }) {
 
-        ComposeImageButton(
-            onClick = { /* Do something */
-                postCommand(conModel = conModel, command = "SE", toastText)
-            },
-            buttonModifier = Modifier.constrainAs(buttonSE) {
-                bottom.linkTo(bottomGuideline)
-                end.linkTo(endGuideline)
-            },
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.SE),
-            imageModifier = Modifier
-                .graphicsLayer {
-                    rotationZ = 135f
-                }
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "backward", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonBackward) {
-                end.linkTo(buttonSE.start)
-                bottom.linkTo(bottomGuideline)
-            },
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.backward),
-            imageModifier = Modifier
-                .graphicsLayer {
-                    rotationZ = 180f
-                }
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "SW", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonSW) {
-                end.linkTo(buttonBackward.start)
-                bottom.linkTo(bottomGuideline)
-            },
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.SW),
-            imageModifier = Modifier
-                .graphicsLayer {
-                    rotationZ = -135f
-                }
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "right", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonRight) {
-                bottom.linkTo(buttonSE.top)
-                end.linkTo(endGuideline)
-            },
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.right),
-            imageModifier = Modifier
-                .graphicsLayer {
-                    rotationZ = 90f
-                }
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "stop", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonStop) {
-                bottom.linkTo(buttonBackward.top)
-                end.linkTo(buttonRight.start)
-            },
-            imageVector = ImageVector.vectorResource(id = R.drawable.alto),
-            contentDescription = stringResource(id = R.string.stop),
-            imageModifier = Modifier
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "left", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonLeft) {
-                bottom.linkTo(buttonSW.top)
-                end.linkTo(buttonStop.start)
-            },
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.left),
-            imageModifier = Modifier
-                .graphicsLayer {
-                    rotationZ = -90f
-                }
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "NE", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonNE) {
-                bottom.linkTo(buttonRight.top)
-                end.linkTo(endGuideline)
-            },
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.NE),
-            imageModifier = Modifier
-                .graphicsLayer {
-                    rotationZ = 45f
-                }
-        )
-        ComposeImageButton(
-            onClick =
-            { /* Do something */
-                postCommand(conModel = conModel, command = "forward", toastText)
-            },
-            buttonModifier = Modifier.constrainAs(buttonForward) {
-                end.linkTo(buttonNE.start)
-                bottom.linkTo(buttonStop.top)
-            },
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.forward)
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "NW", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonNW) {
-                end.linkTo(buttonForward.start)
-                bottom.linkTo(buttonStop.top)
-            },
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.NW),
-            imageModifier = Modifier
-                .graphicsLayer {
-                    rotationZ = -45f
-                }
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "clockwise", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonTurnRight) {
-                bottom.linkTo(bottomGuideline)
-                start.linkTo(startGuideline)
-            },
-            imageVector = ImageVector.vectorResource(id = R.drawable.baseline_rotate_right_24),
-            contentDescription = stringResource(id = R.string.turn_right)
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "countclockwise", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonTurnLeft) {
-                bottom.linkTo(buttonTurnRight.top)
-                start.linkTo(startGuideline)
-            },
-            imageVector = ImageVector.vectorResource(id = R.drawable.baseline_rotate_left_24),
-            contentDescription = stringResource(id = R.string.turn_left)
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "brake", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonBrake) {
-                bottom.linkTo(buttonTurnLeft.top)
-                start.linkTo(startGuideline)
-            },
-            imageVector = ImageVector.vectorResource(id = R.drawable.frenar),
-            contentDescription = stringResource(id = R.string.brake)
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "accelerate", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonAccelerate) {
-                bottom.linkTo(buttonBrake.top)
-                start.linkTo(startGuideline)
-            },
-            imageVector = ImageVector.vectorResource(id = R.drawable.acelerar),
-            contentDescription = stringResource(id = R.string.accelerate)
-        )
-        ComposeImageButton(
-            onClick = { postCommand(conModel = conModel, command = "speak", toastText) },
-            buttonModifier = Modifier.constrainAs(buttonSpeak) {
-                bottom.linkTo(buttonAccelerate.top)
-                start.linkTo(startGuideline)
-            },
-            imageVector = ImageVector.vectorResource(id = R.drawable.hablar),
-            contentDescription = stringResource(id = R.string.speak)
-        )
-        if(toastText.value.isNotEmpty()) {
-            Toast.makeText(LocalContext.current,
-                toastText.value,
-                Toast.LENGTH_SHORT).show()
-            toastText.value = ""
+        ConstraintLayout(modifier.fillMaxWidth()) {
+            // Referencias para los componentes a restringir
+            val (buttonForward, buttonBackward, buttonLeft, buttonRight,
+                buttonNW, buttonNE, buttonSE, buttonSW, buttonStop,
+                buttonAccelerate, buttonBrake,
+                buttonTurnLeft, buttonTurnRight,
+                buttonSpeak) = createRefs()
+            val imageVector = ImageVector.vectorResource(id = R.drawable.flecha)
+            val bottomGuideline = createGuidelineFromBottom(4.dp)
+            val endGuideline = createGuidelineFromEnd(4.dp)
+            val startGuideline = createGuidelineFromStart(4.dp)
+
+            //val toastText = remember { mutableStateOf("") }
+
+            ComposeImageButton(
+                onClick = { /* Do something */
+                    postCommand(conModel = conModel, command = "SE", toastText)
+                },
+                buttonModifier = Modifier.constrainAs(buttonSE) {
+                    bottom.linkTo(bottomGuideline)
+                    end.linkTo(endGuideline)
+                },
+                imageVector = imageVector,
+                contentDescription = stringResource(id = R.string.SE),
+                imageModifier = Modifier
+                    .graphicsLayer {
+                        rotationZ = 135f
+                    }
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "backward", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonBackward) {
+                    end.linkTo(buttonSE.start)
+                    bottom.linkTo(bottomGuideline)
+                },
+                imageVector = imageVector,
+                contentDescription = stringResource(id = R.string.backward),
+                imageModifier = Modifier
+                    .graphicsLayer {
+                        rotationZ = 180f
+                    }
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "SW", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonSW) {
+                    end.linkTo(buttonBackward.start)
+                    bottom.linkTo(bottomGuideline)
+                },
+                imageVector = imageVector,
+                contentDescription = stringResource(id = R.string.SW),
+                imageModifier = Modifier
+                    .graphicsLayer {
+                        rotationZ = -135f
+                    }
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "right", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonRight) {
+                    bottom.linkTo(buttonSE.top)
+                    end.linkTo(endGuideline)
+                },
+                imageVector = imageVector,
+                contentDescription = stringResource(id = R.string.right),
+                imageModifier = Modifier
+                    .graphicsLayer {
+                        rotationZ = 90f
+                    }
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "stop", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonStop) {
+                    bottom.linkTo(buttonBackward.top)
+                    end.linkTo(buttonRight.start)
+                },
+                imageVector = ImageVector.vectorResource(id = R.drawable.alto),
+                contentDescription = stringResource(id = R.string.stop),
+                imageModifier = Modifier
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "left", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonLeft) {
+                    bottom.linkTo(buttonSW.top)
+                    end.linkTo(buttonStop.start)
+                },
+                imageVector = imageVector,
+                contentDescription = stringResource(id = R.string.left),
+                imageModifier = Modifier
+                    .graphicsLayer {
+                        rotationZ = -90f
+                    }
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "NE", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonNE) {
+                    bottom.linkTo(buttonRight.top)
+                    end.linkTo(endGuideline)
+                },
+                imageVector = imageVector,
+                contentDescription = stringResource(id = R.string.NE),
+                imageModifier = Modifier
+                    .graphicsLayer {
+                        rotationZ = 45f
+                    }
+            )
+            ComposeImageButton(
+                onClick =
+                { /* Do something */
+                    postCommand(conModel = conModel, command = "forward", toastText)
+                },
+                buttonModifier = Modifier.constrainAs(buttonForward) {
+                    end.linkTo(buttonNE.start)
+                    bottom.linkTo(buttonStop.top)
+                },
+                imageVector = imageVector,
+                contentDescription = stringResource(id = R.string.forward)
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "NW", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonNW) {
+                    end.linkTo(buttonForward.start)
+                    bottom.linkTo(buttonStop.top)
+                },
+                imageVector = imageVector,
+                contentDescription = stringResource(id = R.string.NW),
+                imageModifier = Modifier
+                    .graphicsLayer {
+                        rotationZ = -45f
+                    }
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "clockwise", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonTurnRight) {
+                    bottom.linkTo(bottomGuideline)
+                    start.linkTo(startGuideline)
+                },
+                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_rotate_right_24),
+                contentDescription = stringResource(id = R.string.turn_right)
+            )
+            ComposeImageButton(
+                onClick = {
+                    postCommand(
+                        conModel = conModel,
+                        command = "countclockwise",
+                        toastText
+                    )
+                },
+                buttonModifier = Modifier.constrainAs(buttonTurnLeft) {
+                    bottom.linkTo(buttonTurnRight.top)
+                    start.linkTo(startGuideline)
+                },
+                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_rotate_left_24),
+                contentDescription = stringResource(id = R.string.turn_left)
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "brake", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonBrake) {
+                    bottom.linkTo(buttonTurnLeft.top)
+                    start.linkTo(startGuideline)
+                },
+                imageVector = ImageVector.vectorResource(id = R.drawable.frenar),
+                contentDescription = stringResource(id = R.string.brake)
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "accelerate", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonAccelerate) {
+                    bottom.linkTo(buttonBrake.top)
+                    start.linkTo(startGuideline)
+                },
+                imageVector = ImageVector.vectorResource(id = R.drawable.acelerar),
+                contentDescription = stringResource(id = R.string.accelerate)
+            )
+            ComposeImageButton(
+                onClick = { postCommand(conModel = conModel, command = "speak", toastText) },
+                buttonModifier = Modifier.constrainAs(buttonSpeak) {
+                    bottom.linkTo(buttonAccelerate.top)
+                    start.linkTo(startGuideline)
+                },
+                imageVector = ImageVector.vectorResource(id = R.drawable.hablar),
+                contentDescription = stringResource(id = R.string.speak)
+            )
+            if (toastText.value.isNotEmpty()) {
+                Toast.makeText(
+                    LocalContext.current,
+                    toastText.value,
+                    Toast.LENGTH_SHORT
+                ).show()
+                toastText.value = ""
+            }
         }
     }
 }
